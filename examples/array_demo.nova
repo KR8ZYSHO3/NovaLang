@@ -1,0 +1,13 @@
+# array_set / array_get and sum (sparse arrays)
+array_set a 0 3
+array_set a 1 7
+array_set a 2 2
+array_get v0 a 0
+array_get v1 a 1
+array_get v2 a 2
+set sum 0
+add sum v0
+add sum v1
+add sum v2
+print sum
+# Expected output: 12

@@ -1,0 +1,10 @@
+# Integer division and modulo
+set a 17
+set b 5
+div a b
+print a
+set r 17
+mod r b
+print r
+# 17 // 5 = 3, 17 % 5 = 2
+# Expected output: 3 then 2

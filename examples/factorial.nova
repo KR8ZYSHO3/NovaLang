@@ -1,0 +1,6 @@
+# Factorial of 5 (multi-command while body)
+set n 5
+set fact 1
+while n gt 0 mul fact n sub n 1
+print fact
+# Expected output: 120

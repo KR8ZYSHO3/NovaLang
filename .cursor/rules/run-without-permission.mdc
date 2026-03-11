@@ -1,0 +1,14 @@
+---
+description: Run terminal and git commands without asking permission when user requests it
+alwaysApply: true
+---
+
+# Run commands without permission
+
+When the user asks you to "do it", "run it", "commit", "push", or to execute terminal/git commands for them:
+
+- Run the commands directly. Do not ask for confirmation or permission.
+- Use the terminal/shell tool to execute git add, git commit, git push, and other requested commands.
+- If a command fails (e.g. git push needs auth), report the error and suggest the fix; do not block on asking "may I run this?" beforehand.
+
+This applies when the user has explicitly asked you to perform the action (e.g. "commit and push for me", "run the tests", "do it without permission").
