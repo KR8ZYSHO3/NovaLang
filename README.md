@@ -10,9 +10,9 @@ No declarations, no types—just variables that default to zero (or one for mult
 ```bash
 git clone https://github.com/KR8ZYSHO3/NovaLang.git
 cd NovaLang
-python interpreter.py examples/hello.nova   # run a file
-python interpreter.py                      # REPL (>>> prompt)
-python nova_gui.py                         # GUI editor + Run
+python nova.py examples/hello.nova         # run a file (or: python interpreter.py ...)
+python nova.py                             # REPL (>>> prompt)
+python nova.py gui                         # GUI editor + Run (or: python nova_gui.py)
 ```
 
 **Your first program** — save as `greet.nova`:
@@ -58,7 +58,8 @@ Requires **Python 3.7+**. No installation or dependencies.
 ```
 NovaLang/
 ├── interpreter.py    # Interpreter: interpret(program) -> output; REPL when run with no args
-├── nova_gui.py       # Tkinter GUI: editor + output + Run/Open/Save
+├── nova.py           # Runner: python nova.py [file.nova | gui] or python nova.py for REPL
+├── nova_gui.py       # Tkinter GUI: editor + output + Run/Open/Save/Examples/Dark
 ├── smoke_test.py     # Quick smoke tests (run: python smoke_test.py)
 ├── docs/
 │   ├── spec.md       # Language spec

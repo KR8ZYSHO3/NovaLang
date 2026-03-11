@@ -47,6 +47,8 @@ class NovaGUI:
         self._build_status_bar()
 
         self.output_pane.config(state=tk.DISABLED)  # read-only
+        self._dark_mode = False
+        self.editor.focus_set()
 
     def _build_toolbar(self):
         toolbar = tk.Frame(self.root, relief=tk.RAISED, bd=1)
@@ -56,6 +58,8 @@ class NovaGUI:
         tk.Button(toolbar, text="New", command=self._new, width=6).pack(side=tk.LEFT, padx=2, pady=2)
         tk.Button(toolbar, text="Open", command=self._open, width=6).pack(side=tk.LEFT, padx=2, pady=2)
         tk.Button(toolbar, text="Save", command=self._save, width=6).pack(side=tk.LEFT, padx=2, pady=2)
+        tk.Button(toolbar, text="Examples", command=self._load_example, width=8).pack(side=tk.LEFT, padx=2, pady=2)
+        tk.Button(toolbar, text="Dark", command=self._toggle_dark, width=5).pack(side=tk.LEFT, padx=2, pady=2)
 
     def _build_panes(self):
         paned = tk.PanedWindow(self.root, orient=tk.HORIZONTAL)
@@ -141,6 +145,15 @@ class NovaGUI:
             if result:
                 self._write_output(result)
             self.status.config(text="Run finished successfully.")
+        except ValueError as e:
+            msg = str(e)
+            if "division by zero" in msg.lower():
+                self._write_output("Error: division by zero (div with 0).")
+            elif "modulo by zero" in msg.lower():
+                self._write_output("Error: modulo by zero (mod with 0).")
+            else:
+                self._write_output(f"Error: {e}")
+            self.status.config(text="Run finished with errors.")
         except Exception as e:
             self._write_output(f"Error: {e}")
             self.status.config(text="Run finished with errors.")
@@ -185,6 +198,48 @@ class NovaGUI:
             self.status.config(text=f"Opened: {path}")
         except Exception as e:
             messagebox.showerror("Open failed", str(e))
+
+    def _load_example(self):
+        examples_dir = Path(__file__).resolve().parent / "examples"
+        if not examples_dir.is_dir():
+            messagebox.showinfo("Examples", "No examples folder found.")
+            return
+        path = filedialog.askopenfilename(
+            initialdir=str(examples_dir),
+            defaultextension=".nova",
+            filetypes=[("NovaLang files", "*.nova"), ("All files", "*.*")],
+        )
+        if not path:
+            return
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                content = f.read()
+            self.editor.delete("1.0", tk.END)
+            self.editor.insert(tk.END, content)
+            self._update_line_numbers()
+            self._highlight()
+            self.current_file = None
+            self.status.config(text=f"Loaded example: {Path(path).name}")
+        except Exception as e:
+            messagebox.showerror("Load example failed", str(e))
+
+    def _toggle_dark(self):
+        self._dark_mode = not self._dark_mode
+        if self._dark_mode:
+            bg, fg = "#1e1e1e", "#d4d4d4"
+            num_bg = "#2d2d2d"
+            self.editor.config(bg=bg, fg=fg, insertbackground=fg)
+            self.editor.tag_configure("keyword", foreground="#569cd6")
+            self.line_numbers.config(background=num_bg, foreground=fg)
+            self.output_pane.config(bg=bg, fg=fg, insertbackground=fg)
+        else:
+            bg, fg = "white", "black"
+            num_bg = "#e8e8e8"
+            self.editor.config(bg=bg, fg=fg, insertbackground=fg)
+            self.editor.tag_configure("keyword", foreground="#0000cc")
+            self.line_numbers.config(background=num_bg, foreground=fg)
+            self.output_pane.config(bg=bg, fg=fg, insertbackground=fg)
+        self.status.config(text="Dark mode on." if self._dark_mode else "Dark mode off.")
 
     def _save(self):
         path = self.current_file or filedialog.asksaveasfilename(

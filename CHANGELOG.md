@@ -2,8 +2,9 @@
 
 ## v0.1.1 (upcoming)
 
-- **REPL mode:** run `python interpreter.py` with no arguments for an interactive `>>>` prompt; variables and arrays persist across lines. Type `exit` or `quit` to quit.
-- **Tkinter GUI:** `python nova_gui.py` – simple IDE with editor, output pane, Run/Clear/New/Open/Save. Cross-platform (Windows, macOS, Linux; on some Linux install `python3-tk`).
+- **REPL mode:** run `python interpreter.py` or `python nova.py` with no arguments for an interactive `>>>` prompt; variables and arrays persist. Type `exit` or `quit` to quit.
+- **nova runner:** `python nova.py` (REPL), `python nova.py file.nova` (run file), `python nova.py gui` (open GUI). Single entry point for all modes.
+- **Tkinter GUI:** `python nova_gui.py` or `python nova.py gui` – IDE with editor (syntax highlighting, line numbers), output pane, Run/Clear/New/Open/Save, **Examples** button (load from examples/), **Dark** mode toggle. Friendly error messages for division/modulo by zero. Editor auto-focused on start.
 - **GitHub Actions CI** runs tests on push/PR to `main` (Python 3.9–3.12).
 - Multi-command if/while bodies: body tokens are consumed by command arity (e.g. `while n gt 0 mul fact n sub n 1` runs both commands each iteration).
 - Optional `variables` and `arrays` parameters on `interpret()` for REPL state.
